@@ -3,25 +3,8 @@ import sys
 from PyQt4 import QtCore, QtGui
 
 
-def Connect():
-        host='localhost' #Replace IP before connecting
-        port = 5000
 
-        s=socket.socket()
-        s.bind((host,port))
-        ("Server started successfully")
-        s.listen(1)
-        c,addr=s.accept()
-        print ("Connection from : " + str(addr))
-        while True:
-            data=c.recv(1024)
-            if not data:
-                break
-            print ("from connected user: " + str(data))
-            data = str(data).upper()
-            print ("Sending" + str(data))
-            c.send(data.encode('UTF-8'))
-        c.close()
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -61,6 +44,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.gridLayout.addWidget(self.textEdit, 3, 0, 2, 1)
         self.textEdit_2 = QtGui.QTextEdit(self.centralwidget)
         self.textEdit_2.setObjectName(_fromUtf8("textEdit_2"))
+        self.textEdit_2.setAlignment(QtCore.Qt.AlignRight)
         self.gridLayout.addWidget(self.textEdit_2, 1, 0, 1, 3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
@@ -86,6 +70,33 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
+    def Connect(self):
+        host='localhost' #Replace IP before connecting
+        port = 50000
+
+        s=socket.socket()
+        s.bind(('',port))
+        self.label_2.setText("Server started successfully")
+        s.listen(1)
+        c,addr=s.accept()
+        print ("Connection from : " + str(addr))
+        while True:
+            data=c.recv(2048)
+            if not data:
+                break
+            print ("from connected user: " + str(data))
+            data = str(data).upper()
+            print ("Sending" + str(data))
+            c.send(data.encode('UTF-8'))
+        c.close()
+
+    def Send(self):
+        msg=str(self.textEdit.toPlainText())
+        self.textEdit_2.append(msg)
+        
+        self.textEdit.clear()
+
 
     def close_application(self):
 
@@ -113,9 +124,11 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.pushButton_2.clicked.connect(self.textEdit.clear)  #Clearing Text in the textEdit
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Enter your text here: </span></p></body></html>", None))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Status: Disconnected :( </span></p></body></html>", None))
+        self.pushButton.clicked.connect(self.Send)
         self.menuExit.setTitle(_translate("MainWindow", "File", None))
         self.actionExit.setText(_translate("MainWindow", "Quit", None))
         self.actionConnect.setText(_translate("MainWindow","Connect",None))
+        self.actionConnect.triggered.connect(self.Connect)
         self.actionConnect.setStatusTip('Connect to the chat server')
         self.actionExit.triggered.connect(self.close_application) #Exit the Appication
         self.actionExit.setShortcut("Ctrl+Q")  #Shortcut for quitting
