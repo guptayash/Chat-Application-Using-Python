@@ -72,30 +72,25 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
     def Connect(self):
         host = 'localhost'
-        port = 0
+        port = 50000
+        s = socket.socket()
+        s.bind(('',port))
 
-        clients = []
+        s.listen(1)
+        c, addr = s.accept()
+        self.textEdit_2.append("Connection from: " + str(addr))
+        while True:
+            data = c.recv(1024)
+            if not data:
+                break
+            self.textEdit_2.append("from connected user: " + str(data))
+            data = str(data.upper())
+            print ("sending: " + str(data.encode('UTF-8')))
+            c.send(data.encode('UTF-8'))
+        c.close()
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.bind((host,port))
-        s.setblocking(0)
 
-        quitting = False
-        print ("Server Started.")
-        while not quitting:
-            try:
-                data, addr = s.recvfrom(1024)
-                if ("Quit" in str(data)):
-                    quitting = True
-                if addr not in clients:
-                    clients.append(addr)
-                    
-                print (time.ctime(time.time()) + str(addr) + ": :" + str(data))
-                for client in clients:
-                    s.sendto(data.encode("UTF-8"), client)
-            except:
-                pass
-        s.close()
+
     
     #def Client(self):
         
@@ -103,7 +98,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     def Send(self):
         msg=str(self.textEdit.toPlainText())
-        self.textEdit_2.append(msg)
+        self.textEdit_2.append("You : "+msg)
         
         self.textEdit.clear()
 
@@ -153,10 +148,7 @@ if __name__ == "__main__":
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    MainWindow.show()
-    
-        
-    
+    MainWindow.show()   
     sys.exit(app.exec_())
     
 
