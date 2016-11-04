@@ -39,29 +39,32 @@ except AttributeError:
 class Ui_MainWindow(QtGui.QMainWindow):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(753, 565)
+        MainWindow.resize(758, 545)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.textBrowser = QtGui.QTextBrowser(self.centralwidget)
-        self.textBrowser.setObjectName(_fromUtf8("textBrowser"))
-        self.gridLayout.addWidget(self.textBrowser, 0, 0, 1, 2)
-        self.label = QtGui.QLabel(self.centralwidget)
-        self.label.setObjectName(_fromUtf8("label"))
-        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
-        self.textEdit = QtGui.QTextEdit(self.centralwidget)
-        self.textEdit.setObjectName(_fromUtf8("textEdit"))
-        self.gridLayout.addWidget(self.textEdit, 2, 0, 2, 1)
-        self.pushButton = QtGui.QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.gridLayout.addWidget(self.pushButton, 2, 1, 1, 1)
         self.pushButton_2 = QtGui.QPushButton(self.centralwidget)
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.gridLayout.addWidget(self.pushButton_2, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_2, 4, 2, 1, 1)
+        self.pushButton = QtGui.QPushButton(self.centralwidget)
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.gridLayout.addWidget(self.pushButton, 3, 2, 1, 1)
+        self.label_2 = QtGui.QLabel(self.centralwidget)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
+        self.label = QtGui.QLabel(self.centralwidget)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.gridLayout.addWidget(self.label, 2, 0, 1, 1)
+        self.textEdit = QtGui.QTextEdit(self.centralwidget)
+        self.textEdit.setObjectName(_fromUtf8("textEdit"))
+        self.gridLayout.addWidget(self.textEdit, 3, 0, 2, 1)
+        self.textEdit_2 = QtGui.QTextEdit(self.centralwidget)
+        self.textEdit_2.setObjectName(_fromUtf8("textEdit_2"))
+        self.gridLayout.addWidget(self.textEdit_2, 1, 0, 1, 3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 753, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 758, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuExit = QtGui.QMenu(self.menubar)
         self.menuExit.setObjectName(_fromUtf8("menuExit"))
@@ -79,6 +82,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuExit.addAction(self.actionExit)
         self.menubar.addAction(self.menuExit.menuAction())
         self.menubar.addAction(self.menuMenu.menuAction())
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -101,12 +105,14 @@ class Ui_MainWindow(QtGui.QMainWindow):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "QuickFi", None))
         MainWindow.setWindowIcon(QtGui.QIcon("Logo2.png"))
+        self.textEdit_2.setReadOnly(True) #Text Area for displaying messages is non-Editable
         self.pushButton.setText(_translate("MainWindow", "Send", None))
         self.pushButton.setStatusTip('Fire! Send your message')
         self.pushButton_2.setText(_translate("MainWindow", "Clear", None))
         self.pushButton_2.setStatusTip('Clear text box' )
         self.pushButton_2.clicked.connect(self.textEdit.clear)  #Clearing Text in the textEdit
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600; font-style:italic;\">Enter your text here: </span></p></body></html>", None))
+        self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">Status: Disconnected :( </span></p></body></html>", None))
         self.menuExit.setTitle(_translate("MainWindow", "File", None))
         self.actionExit.setText(_translate("MainWindow", "Quit", None))
         self.actionConnect.setText(_translate("MainWindow","Connect",None))
@@ -114,6 +120,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.actionExit.triggered.connect(self.close_application) #Exit the Appication
         self.actionExit.setShortcut("Ctrl+Q")  #Shortcut for quitting
         self.actionExit.setStatusTip('Quit current session')
+        
         
         
         
@@ -128,5 +135,5 @@ if __name__ == "__main__":
         
     
     sys.exit(app.exec_())
-    #Connect()
+    
 
