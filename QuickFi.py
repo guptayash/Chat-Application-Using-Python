@@ -66,30 +66,40 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.menuExit.addAction(self.actionExit)
         self.menubar.addAction(self.menuExit.menuAction())
         self.menubar.addAction(self.menuMenu.menuAction())
-        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
     def Connect(self):
-        host='localhost' #Replace IP before connecting
-        port = 50000
+        host = 'localhost'
+        port = 0
 
-        s=socket.socket()
-        s.bind(('',port))
-        self.label_2.setText("Server started successfully")
-        s.listen(1)
-        c,addr=s.accept()
-        print ("Connection from : " + str(addr))
-        while True:
-            data=c.recv(2048)
-            if not data:
-                break
-            print ("from connected user: " + str(data))
-            data = str(data).upper()
-            print ("Sending" + str(data))
-            c.send(data.encode('UTF-8'))
-        c.close()
+        clients = []
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.bind((host,port))
+        s.setblocking(0)
+
+        quitting = False
+        print ("Server Started.")
+        while not quitting:
+            try:
+                data, addr = s.recvfrom(1024)
+                if ("Quit" in str(data)):
+                    quitting = True
+                if addr not in clients:
+                    clients.append(addr)
+                    
+                print (time.ctime(time.time()) + str(addr) + ": :" + str(data))
+                for client in clients:
+                    s.sendto(data.encode("UTF-8"), client)
+            except:
+                pass
+        s.close()
+    
+    #def Client(self):
+        
+        
 
     def Send(self):
         msg=str(self.textEdit.toPlainText())
