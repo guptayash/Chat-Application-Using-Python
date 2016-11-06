@@ -1,9 +1,11 @@
 import socket
 import sys
 from PyQt4 import QtCore, QtGui
+import time
+import threading
 
 
-
+    
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -71,23 +73,24 @@ class Ui_MainWindow(QtGui.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
     def Connect(self):
+        QtConcurrent.run
         host = 'localhost'
         port = 50000
         s = socket.socket()
-        s.bind(('',port))
-
+        s.bind((host,port))
         s.listen(1)
         c, addr = s.accept()
-        self.textEdit_2.append("Connection from: " + str(addr))
+        sys.stdout.write("Connection from: " + str(addr))
+        self.label_2.setText("Connected")
         while True:
-            data = c.recv(1024)
-            if not data:
-                break
-            self.textEdit_2.append("from connected user: " + str(data))
-            data = str(data.upper())
-            print ("sending: " + str(data.encode('UTF-8')))
-            c.send(data.encode('UTF-8'))
+                data = c.recv(1024)
+                if not data:
+                    break
+                self.textEdit_2.append("from connected user: " + str(data))              
+                data = str(data.upper())
+                c.send(data.encode('UTF-8'))
         c.close()
+            
 
 
 
@@ -144,6 +147,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
         
                            
 if __name__ == "__main__":
+    
     app = QtGui.QApplication(sys.argv)
     MainWindow = QtGui.QMainWindow()
     ui = Ui_MainWindow()
